@@ -9,6 +9,9 @@ let mvpNames = squad
     })
     .map( (player) => { 
         return player.name; 
+    })
+    .find( (name) => {
+        return name === "Kai";
     });
 
 console.log(mvpNames);
