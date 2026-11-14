@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import './App.css';
 
-function PlayerCard({name, score, increaseScore}) {
+function PlayerCard({ name }) {
+
+  const [playerScore, setPlayerScore] = useState(0);
+
   return (
-    <>
-      <h2>Welcome, {name}! Your score is: {score}</h2>
-      <button onClick={() => increaseScore(score + 1)}> Boost Score </button>
-    </>
+    <div style={{ marginBottom: "20px"}}>
+      <h2>Welcome, {name}! Your score is: {playerScore}</h2>
+
+      <button onClick={() => setPlayerScore(playerScore + 1)}> Boost Score </button>
+    </div>
   );
 }
 
@@ -28,17 +32,18 @@ function App(){
     <div>
       {
         // Fix 1: { } ki jagah ( ) lagaya taaki automatically render ho jaye
-        squad.map((player) => (
-          <PlayerCard name={player} score={count} increaseScore={setCount} />
+        squad.map((player, index) => (
+          <PlayerCard key={index} name={player} />
         ))
       }
 
+      <div style={{ marginTop: "40px"}}>
       <input 
         type="text"
         placeholder="Enter your name"
         onChange={(event) => setPlayerName(event.target.value)}
       />
-
+    </div>
       <hr />
 
       <h1 style={{ color: counterColor}}> {count} </h1>
