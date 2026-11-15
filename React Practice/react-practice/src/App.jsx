@@ -7,6 +7,11 @@ function PlayerCard({ name, index, deletePlayer }) {
 
   const [showScore, setShowScore] = useState(true);
 
+  useEffect(() => {
+    document.title = `${name} is ${playerScore}`;
+    console.log(`${name} ka naya score hai:`, playerScore);
+  }, [playerScore, name]);
+
   return (
     <div style={{ marginBottom: "20px"}}>
       <h2>Welcome, {name}!</h2>
@@ -20,7 +25,7 @@ function PlayerCard({ name, index, deletePlayer }) {
       <button onClick={() => setPlayerScore(playerScore + 1)}> Boost Score </button>
 
       <button 
-        style={{ marginleft:"10px", color:"red"}}
+        style={{ marginLeft:"10px", color:"red"}}
         onClick={() => deletePlayer(index)}>
           Delete Player
         </button>
