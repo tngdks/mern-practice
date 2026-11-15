@@ -18,7 +18,7 @@ function App(){
   const [count, setCount] = useState(0);
   const [playerName, setPlayerName] = useState("Guest");
 
-  const squad = ["takao", "Broly", "Goku", "Vegeta"];
+  const [squad, setSquad] = useState(["takao", "Goku", "Broly", "Vegeta"]);
 
   let counterColor = "white";
 
@@ -43,6 +43,7 @@ function App(){
         placeholder="Enter your name"
         onChange={(event) => setPlayerName(event.target.value)}
       />
+      <button onClick ={() => setSquad([...squad, playerName])}> Add Player </button>
     </div>
       <hr />
 
