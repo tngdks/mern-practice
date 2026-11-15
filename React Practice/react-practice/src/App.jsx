@@ -43,9 +43,11 @@ function App(){
   const [squad, setSquad] = useState(["takao", "Goku", "Broly", "Vegeta"]);
 
   useEffect(() => {
-    console.log("Welcome to DBZ Leaderborad! System Loaded.")
-    document.title = "DBZ Arena "
-  }, []);
+    // console.log("Welcome to DBZ Leaderborad! System Loaded.")
+    // document.title = "DBZ Arena "
+    document.title = `Score: ${count}`;
+    console.log("Count badal gaya! Naya count hai:", count);
+  }, [count]);
 
   const deletePlayer = (indexToRemove) => {
     const newSquad = squad.filter((player, index) => index !== indexToRemove);
