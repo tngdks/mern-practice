@@ -5,7 +5,7 @@ function PlayerCard({ name, index, deletePlayer }) {
 
   const [playerScore, setPlayerScore] = useState(0);
 
-  const [showScore, setShowScore] = useState(0);
+  const [showScore, setShowScore] = useState(true);
 
   return (
     <div style={{ marginBottom: "20px"}}>
@@ -38,13 +38,14 @@ function PlayerCard({ name, index, deletePlayer }) {
 function App(){
   const [count, setCount] = useState(0);
   const [playerName, setPlayerName] = useState("Guest");
+  const [searchText, setSearchText] = useState("");
+
+  const [squad, setSquad] = useState(["takao", "Goku", "Broly", "Vegeta"]);
 
   const deletePlayer = (indexToRemove) => {
     const newSquad = squad.filter((player, index) => index !== indexToRemove);
     setSquad(newSquad);
   };
-
-  const [squad, setSquad] = useState(["takao", "Goku", "Broly", "Vegeta"]);
 
   let counterColor = "white";
 
@@ -56,16 +57,27 @@ function App(){
 
   return (
     <div>
+      <div style ={{ marginBottom: "30px", padding:"10px", backgroundColor: "#f0f0f0"}}>
+        <h3> Search Squad: </h3>
+        <input
+          type="text"
+          placeholder="Type to search player..."
+          onChange={(event) => setSearchText(event.target.value)}
+        />
+      </div>
+      
       {
         // Fix 1: { } ki jagah ( ) lagaya taaki automatically render ho jaye
-        squad.map((player, index) => (
-          <PlayerCard
-           key={index} 
-           name={player}
-           index = {index}
-           deletePlayer = {deletePlayer} 
-          />
-        ))
+        squad
+          .filter((player) => player.toLowerCase().includes(searchText.toLowerCase()))
+          .map((player, index) => (
+            <PlayerCard
+              key={index} 
+              name={player}
+              index = {index}
+              deletePlayer = {deletePlayer} 
+            />
+          ))
       }
 
       <div style={{ marginTop: "40px"}}>
@@ -87,5 +99,4 @@ function App(){
     </div>
   );
 }
-
 export default App;
