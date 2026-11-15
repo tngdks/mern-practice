@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 
 function PlayerCard({ name, index, deletePlayer }) {
@@ -42,6 +42,11 @@ function App(){
 
   const [squad, setSquad] = useState(["takao", "Goku", "Broly", "Vegeta"]);
 
+  useEffect(() => {
+    console.log("Welcome to DBZ Leaderborad! System Loaded.")
+    document.title = "DBZ Arena "
+  }, []);
+
   const deletePlayer = (indexToRemove) => {
     const newSquad = squad.filter((player, index) => index !== indexToRemove);
     setSquad(newSquad);
@@ -65,7 +70,7 @@ function App(){
           onChange={(event) => setSearchText(event.target.value)}
         />
       </div>
-      
+
       {
         // Fix 1: { } ki jagah ( ) lagaya taaki automatically render ho jaye
         squad
