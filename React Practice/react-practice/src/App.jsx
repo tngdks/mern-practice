@@ -5,9 +5,17 @@ function PlayerCard({ name, index, deletePlayer }) {
 
   const [playerScore, setPlayerScore] = useState(0);
 
+  const [showScore, setShowScore] = useState(0);
+
   return (
     <div style={{ marginBottom: "20px"}}>
-      <h2>Welcome, {name}! Your score is: {playerScore}</h2>
+      <h2>Welcome, {name}!</h2>
+
+      {showScore ? (
+        <h3> Your Score is: {playerScore}</h3>
+      ) : (
+        <h3> Score is Hidden </h3>
+      )}
 
       <button onClick={() => setPlayerScore(playerScore + 1)}> Boost Score </button>
 
@@ -16,6 +24,13 @@ function PlayerCard({ name, index, deletePlayer }) {
         onClick={() => deletePlayer(index)}>
           Delete Player
         </button>
+
+      <button 
+        style={{ marginLeft:"10px"}}
+        onClick = {() => setShowScore(!showScore)}
+      >
+        Hide/Show Score
+      </button>
     </div>
   );
 }
