@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './App.css';
 
-function PlayerCard({ name }) {
+function PlayerCard({ name, index, deletePlayer }) {
 
   const [playerScore, setPlayerScore] = useState(0);
 
@@ -10,6 +10,12 @@ function PlayerCard({ name }) {
       <h2>Welcome, {name}! Your score is: {playerScore}</h2>
 
       <button onClick={() => setPlayerScore(playerScore + 1)}> Boost Score </button>
+
+      <button 
+        style={{ marginleft:"10px", color:"red"}}
+        onClick={() => deletePlayer(index)}>
+          Delete Player
+        </button>
     </div>
   );
 }
@@ -17,6 +23,11 @@ function PlayerCard({ name }) {
 function App(){
   const [count, setCount] = useState(0);
   const [playerName, setPlayerName] = useState("Guest");
+
+  const deletePlayer = (indexToRemove) => {
+    const newSquad = squad.filter((player, index) => index !== indexToRemove);
+    setSquad(newSquad);
+  };
 
   const [squad, setSquad] = useState(["takao", "Goku", "Broly", "Vegeta"]);
 
@@ -33,7 +44,12 @@ function App(){
       {
         // Fix 1: { } ki jagah ( ) lagaya taaki automatically render ho jaye
         squad.map((player, index) => (
-          <PlayerCard key={index} name={player} />
+          <PlayerCard
+           key={index} 
+           name={player}
+           index = {index}
+           deletePlayer = {deletePlayer} 
+          />
         ))
       }
 
