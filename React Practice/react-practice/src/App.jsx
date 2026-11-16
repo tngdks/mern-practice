@@ -112,3 +112,53 @@ function App(){
   );
 }
 export default App;
+
+
+// import { useState, useEffect } from 'react';
+
+// // analog watch ke liye fucntin banaya
+// function AnalogWatch({ currentTime }) {
+//   return <div> Analog Design: {currentTime}</div>;
+// }
+ 
+// //digital watch keliye fucniton banaye
+// function DigitalWatch({ currentTime }) {
+//   return <div> {currentTime} </div>;
+// }
+
+// function App() {
+//   //ek analog state banaye ke jn woh avtive ho to true rahe agar false hai to digital rahega
+//   const [isAnalog, setIsAnalog] = useState(true);
+
+//   //state banye tuime ke liye jo dikhana hai 
+//   const [time, setTime] = useState(new Date().toLocaleTimeString());
+
+//   //watch mein time dahio dikhaye uske liye use effect lagaye aur update kr rahe hai second ko hr 1000 ms pr
+//   useEffect(() => {
+//     const timer = setInterval(() => {
+//       setTime(new Date().toLocaleTimeString());
+//     }, 1000);
+//     return () => clearInterval(timer);
+//   }, []);
+
+//   return (
+//     <div style={{ textAlign: "center", marginTop: "50px" }}>
+
+//     {/*yaha condition lagaye ki jb state change hoa toh componenet rerender ho jaayega*/}
+//       <button onClick={() => setIsAnalog(!isAnalog)}>
+//         Switch to {isAnalog ? "Digital" : "Analog"}
+//       </button>
+
+//       <div style={{ marginTop: "20px" }}>
+//         {/* yaha time ko set kr denge agar analog hai toh ya hoga aur digital hai toh kya hopga. wasie value same hi rahegi bs ui alag hoga*/}
+//         {isAnalog ? (
+//           <AnalogWatch currentTime={time} />
+//         ) : (
+//           <DigitalWatch currentTime={time} />
+//         )}
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default App;
