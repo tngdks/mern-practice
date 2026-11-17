@@ -1,36 +1,88 @@
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-
-//Page 1: home page
-function Home(){
-  return <h2> Welcome to DBZ Home Arena! </h2>
-}
-
-//Page 2: profile page
-function Profile(){
-  return <h2> Fighter's Secret Profile Page </h2>
-}
+import { useState } from 'react';
+import './App.css';
 
 function App() {
+  //yaha user ke inputs ke liye states banayenge
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState(""); // yeha hum success ya error dikhayenge ki entry ho gyi hai ya nahi
+
+  //yaha hum batenyenge ki fomr submit hone pr kya hoga
+  const handleSubmit = (e) => {
+    //yaha hum form ko page ko refresh krne se rokenge ki agar hum submit kare toh page refresh naho
+    e.preventDefault();
+
+    //yaha hum check karenge ki kahi khali form toh submit nahi kiya jaa rha
+    if (name === "" || email === "") {
+      setMessage(" Name aur Email dono khali nahi rahenge, dono mein entry chahiye!");
+      return;
+    }
+
+    //yaha hum jo data user ne diya hai use ek packet mein banayneg aur backend ko bhejenge
+    const newFighter = {
+      name: name,
+      email: email
+    };
+
+    //yeh message jayega message state mein
+    setMessage(" Data bhej raha hai");
+
+    //POST request ka use karenge data ko backend ko bhejne ke liye
+    //yaha hum phir se fake api ka use karenge
+    fetch('https://jsonplaceholder.typicode.com/users', {
+      method:'POST', // yaha method mein POST ka mtlb hum data le nahi balki bhej rhe hai
+      headers: {
+        'Content-type': 'application/json',//backend ko nata rahe hai ki data json mein bhejnge
+      },
+      body: JSON.stringify(newFighter), // yaha apne data ko json mein convert kr diya
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("backend mein yeh save ho gaya:", data);
+        setMessage(`Bdhai ho ${data.name} add ho gaya (ID: ${data.id})`);
+
+        //form ko wapas se khali krna hoga
+        setName("");
+        setEmail("");
+      })
+
+        // koi error aane pe yeh message bhejna hoga 
+        .catch((error) => {
+          setMessage("Network error aa gaya");
+        });
+  };
+
   return (
-    //yeh manage krta hai ki ab screen pr kya dikhaya jaayega
-    <BrowserRouter>
+    <div style={{ textAlign: "center", padding: "40px" }}>
+      <h2>⚔️ Add New Fighter</h2>
+      
+      {/* Form tag ke onSubmit mein apna function laga diya */}
+      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
+        
+        <input 
+          type="text" 
+          placeholder="Fighter ka naam" 
+          value={name} // Step 2: Input box ki value state se aayegi
+          onChange={(e) => setName(e.target.value)} // Jab type hoga, state update hogi
+          style={{ padding: "10px", width: "250px" }}
+        />
+        
+        <input 
+          type="email" 
+          placeholder="Email Address" 
+          value={email} 
+          onChange={(e) => setEmail(e.target.value)}
+          style={{ padding: "10px", width: "250px" }}
+        />
+        
+        <button type="submit" style={{ padding: "10px 20px", cursor: "pointer" }}>
+          Join Squad
+        </button>
+      </form>
 
-      {/* Navigation bar jo screen pr humesha upar dikhega */}
-      <nav style={{ padding: "10px", backgroundColor: "#333", color: "white"}}>
-        {/*yaha hum button banayene alag alag pages ke */}
-        <Link to="/" style={{color:"white", marginRight: "20px", }}> Home </Link>
-        <Link to="/profile" style={{color:"white"}}> Profile </Link>
-      </nav>
-
-      {/*yaha hum check karenge ki url mein kya hai aur usko screen pr dikhayenge*/}
-      <div style={{padding:"20px"}}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
-        </Routes>
-      </div>
-    
-    </BrowserRouter>
+      {/* Message dikhane ka dabba */}
+      {message && <h3 style={{ marginTop: "20px" }}>{message}</h3>}
+    </div>
   );
 }
 
@@ -40,6 +92,48 @@ export default App;
 
 
 
+
+
+
+
+
+// import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+
+// //Page 1: home page
+// function Home(){
+//   return <h2> Welcome to DBZ Home Arena! </h2>
+// }
+
+// //Page 2: profile page
+// function Profile(){
+//   return <h2> Fighter's Secret Profile Page </h2>
+// }
+
+// function App() {
+//   return (
+//     //yeh manage krta hai ki ab screen pr kya dikhaya jaayega
+//     <BrowserRouter>
+
+//       {/* Navigation bar jo screen pr humesha upar dikhega */}
+//       <nav style={{ padding: "10px", backgroundColor: "#333", color: "white"}}>
+//         {/*yaha hum button banayene alag alag pages ke */}
+//         <Link to="/" style={{color:"white", marginRight: "20px", }}> Home </Link>
+//         <Link to="/profile" style={{color:"white"}}> Profile </Link>
+//       </nav>
+
+//       {/*yaha hum check karenge ki url mein kya hai aur usko screen pr dikhayenge*/}
+//       <div style={{padding:"20px"}}>
+//         <Routes>
+//           <Route path="/" element={<Home />} />
+//           <Route path="/profile" element={<Profile />} />
+//         </Routes>
+//       </div>
+    
+//     </BrowserRouter>
+//   );
+// }
+
+// export default App;
 
 
 
