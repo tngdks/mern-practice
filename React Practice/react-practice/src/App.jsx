@@ -1,120 +1,178 @@
-import { useState } from 'react';
+import { createContext, useState, useContext } from 'react';
 import './App.css';
 
-function App() {
-  //yaha user ke inputs ke liye states banayenge
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");// naya state banyenge password ke liye
-  const [errorMsg, setErrorMsg] = useState(""); // yeh state sirf error ke liye
-  const [successMsg, setSuccessMsg] = useState(""); // yeh state success hone pr ke liye hai
-
-  //yaha hum batenyenge ki fomr submit hone pr kya hoga
-  const handleSubmit = (e) => {
-    //yaha hum form ko page ko refresh krne se rokenge ki agar hum submit kare toh page refresh naho
-    e.preventDefault();
-
-    //yaha hum check karenge ki kahi khali form toh submit nahi kiya jaa rha
-    if (name === "" || email === "" || password === "") {
-      setMessage(" Name aur Email aur password tino khali nahi rahenge, dono mein entry chahiye!");
-      return;
-    }
-
-    //yeh check karega ki email mein @ ya . hai ya nahi
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) {
-      setErrorMsg("Email ka format galat hai. @ aur . sahi se lagaye");
-      return;
-    }
-
-    //yaha password length check karenge
-    if (password.length < 8) {
-      setErrorMsg("Password kam se kam 8 character lamba hona chahiye");
-      return;
-    }
-
-    //yaha hum jo data user ne diya hai use ek packet mein banayneg aur backend ko bhejenge
-    const newFighter = { name, email, password };
-
-    //entry sahi hone pr yeh msg jaayega successMsg state mein
-    setSuccessMsg(" Checking and saving data...");
+//yaha ek khali dabba banayenge
+//yeh component ke bahar hai taki sab isko access kar sake
+const FighterContext = createContext();
 
 
-    //POST request ka use karenge data ko backend ko bhejne ke liye
-    //yaha hum phir se fake api ka use karenge
-    fetch('https://jsonplaceholder.typicode.com/users', {
-      method:'POST', // yaha method mein POST ka mtlb hum data le nahi balki bhej rhe hai
-      headers: {
-        'Content-type': 'application/json',//backend ko nata rahe hai ki data json mein bhejnge
-      },
-      body: JSON.stringify(newFighter), // yaha apne data ko json mein convert kr diya
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("backend mein yeh save ho gaya:", data);
-        setSuccessMsg(`Bdhai ho ${data.name} add ho gaya!`);// yeha se message successMessage state mein jayeega
-
-        //form ko wapas se khali krna hoga
-        setName("");
-        setEmail("");
-        setPassword("");
-      })
-
-        // koi error aane pe yeh message bhejna hoga 
-        .catch((error) => {
-          setErrorMsg("Network error aa gaya. Backend tak nahi pahucha");
-          setSuccessMsg("");
-        });
-  };
-
+//yaha middleman hai jise data se koi matlb nahi hai
+function Floor2() {
   return (
-    <div style={{ textAlign: "center", padding: "40px" }}>
-      <h2>⚔️ Secure Fighter SignUp! </h2>
-      
-      {/* Form tag ke onSubmit mein apna function laga diya */}
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
-        
-        <input 
-          type="text" 
-          placeholder="Fighter ka naam" 
-          value={name} // Step 2: Input box ki value state se aayegi
-          onChange={(e) => setName(e.target.value)} // Jab type hoga, state update hogi
-          style={{ padding: "10px", width: "250px" }}
-        />
-        
-        <input 
-          type="text" //yaha type text rkha hai taki humara apna validatuion check kaam kare
-          placeholder="Email Address" 
-          value={email} 
-          onChange={(e) => setEmail(e.target.value)}
-          style={{ padding: "10px", width: "250px" }}
-        />
-        
-        <input 
-        type="password" placeholder="Secret Password"
-        value={password} onChange={(e) => setPassword(e.target.value)}
-        style={{ padding: "10px", width: "250px "}}
-        />
-
-        
-        <button type="submit" style={{ padding: "10px 20px", cursor: "pointer" }}>
-          Register Fighter
-        </button>
-      </form>
-
-      {/* Error humesha laal rang mein aayega */}
-      {errorMsg && <h4 style={{ color:"red", marginTop: "20px" }}> { errorMsg } </h4> }
-
-      {/* Message successfully jaane pr hara dikhyega*/}
-      {successMsg && <h4 style={{ color:"green", marginTop:"20px" }}> { successMsg } </h4> }
+    <div style={{ border:"2px solid gray", margin: "10px", padding: "10px "}}>
+      <h3> Floor 2 (The Middleman) </h3>
+      <p> Ise Fighter ka naam nahi pata. isne bas Floor 1 ko bula liya. </p>
+      <Floor1 />
     </div>
   );
 }
 
-export default App;
+//yeha woh hoga jisko sach mein woh data chaiye
+function Floor1() {
+  //yaha isne godown se data nikal liya
+  const { fighterName, setFighterName } = useContext(FighterContext);
+
+  return (
+    <div style={{ border: "2px solid green", margin: "10px", padding: "10px", backgroundColor: "#e6ffe6"}}>
+      <h3> Floor 1 (isi ko data chahiya) </h3>
+      <p>Fighter ka naam Godown se aaya: <b>{fighterName}</b></p>
+      <button onClick={() => setFighterName("Legendary Super Saiyan Broly")}>
+        Evolve Fighter
+      </button>
+    </div>
+  );
+}
+
+//yaha pe main componenet rahega(Main App)
+export default function App(){
+  const [fighterName, setFighterName] = useState("Takao");
+
+  return (
+    <div style={{ textAlign: "center", padding: "20px" }}>
+      <h2> The Boss (App Component) </h2>
+      {/* godown ko chabhi humne dono floors 1 aur 2 ko de di */}
+      {/* yaha value={{...}} ke andar wo data rakha jo godown mein daalna hai */}
+      <FighterContext.Provider value={{ fighterName, setFighterName }}>
+
+          {/* App ne sirf floor 2 ko bulaya, data prop mein nahi bhja! */}
+          <Floor2 />
+      </FighterContext.Provider>
+    </div>
+  );
+
+}
 
 
 
+
+
+
+
+
+// import { useState } from 'react';
+// import './App.css';
+
+// function App() {
+//   //yaha user ke inputs ke liye states banayenge
+//   const [name, setName] = useState("");
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");// naya state banyenge password ke liye
+//   const [errorMsg, setErrorMsg] = useState(""); // yeh state sirf error ke liye
+//   const [successMsg, setSuccessMsg] = useState(""); // yeh state success hone pr ke liye hai
+
+//   //yaha hum batenyenge ki fomr submit hone pr kya hoga
+//   const handleSubmit = (e) => {
+//     //yaha hum form ko page ko refresh krne se rokenge ki agar hum submit kare toh page refresh naho
+//     e.preventDefault();
+
+//     //yaha hum check karenge ki kahi khali form toh submit nahi kiya jaa rha
+//     if (name === "" || email === "" || password === "") {
+//       setMessage(" Name aur Email aur password tino khali nahi rahenge, dono mein entry chahiye!");
+//       return;
+//     }
+
+//     //yeh check karega ki email mein @ ya . hai ya nahi
+//     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//     if (!emailPattern.test(email)) {
+//       setErrorMsg("Email ka format galat hai. @ aur . sahi se lagaye");
+//       return;
+//     }
+
+//     //yaha password length check karenge
+//     if (password.length < 8) {
+//       setErrorMsg("Password kam se kam 8 character lamba hona chahiye");
+//       return;
+//     }
+
+//     //yaha hum jo data user ne diya hai use ek packet mein banayneg aur backend ko bhejenge
+//     const newFighter = { name, email, password };
+
+//     //entry sahi hone pr yeh msg jaayega successMsg state mein
+//     setSuccessMsg(" Checking and saving data...");
+
+
+//     //POST request ka use karenge data ko backend ko bhejne ke liye
+//     //yaha hum phir se fake api ka use karenge
+//     fetch('https://jsonplaceholder.typicode.com/users', {
+//       method:'POST', // yaha method mein POST ka mtlb hum data le nahi balki bhej rhe hai
+//       headers: {
+//         'Content-type': 'application/json',//backend ko nata rahe hai ki data json mein bhejnge
+//       },
+//       body: JSON.stringify(newFighter), // yaha apne data ko json mein convert kr diya
+//     })
+//       .then((response) => response.json())
+//       .then((data) => {
+//         console.log("backend mein yeh save ho gaya:", data);
+//         setSuccessMsg(`Bdhai ho ${data.name} add ho gaya!`);// yeha se message successMessage state mein jayeega
+
+//         //form ko wapas se khali krna hoga
+//         setName("");
+//         setEmail("");
+//         setPassword("");
+//       })
+
+//         // koi error aane pe yeh message bhejna hoga 
+//         .catch((error) => {
+//           setErrorMsg("Network error aa gaya. Backend tak nahi pahucha");
+//           setSuccessMsg("");
+//         });
+//   };
+
+//   return (
+//     <div style={{ textAlign: "center", padding: "40px" }}>
+//       <h2>⚔️ Secure Fighter SignUp! </h2>
+      
+//       {/* Form tag ke onSubmit mein apna function laga diya */}
+//       <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
+        
+//         <input 
+//           type="text" 
+//           placeholder="Fighter ka naam" 
+//           value={name} // Step 2: Input box ki value state se aayegi
+//           onChange={(e) => setName(e.target.value)} // Jab type hoga, state update hogi
+//           style={{ padding: "10px", width: "250px" }}
+//         />
+        
+//         <input 
+//           type="text" //yaha type text rkha hai taki humara apna validatuion check kaam kare
+//           placeholder="Email Address" 
+//           value={email} 
+//           onChange={(e) => setEmail(e.target.value)}
+//           style={{ padding: "10px", width: "250px" }}
+//         />
+        
+//         <input 
+//         type="password" placeholder="Secret Password"
+//         value={password} onChange={(e) => setPassword(e.target.value)}
+//         style={{ padding: "10px", width: "250px "}}
+//         />
+
+        
+//         <button type="submit" style={{ padding: "10px 20px", cursor: "pointer" }}>
+//           Register Fighter
+//         </button>
+//       </form>
+
+//       {/* Error humesha laal rang mein aayega */}
+//       {errorMsg && <h4 style={{ color:"red", marginTop: "20px" }}> { errorMsg } </h4> }
+
+//       {/* Message successfully jaane pr hara dikhyega*/}
+//       {successMsg && <h4 style={{ color:"green", marginTop:"20px" }}> { successMsg } </h4> }
+//     </div>
+//   );
+// }
+
+// export default App;
 
 
 
