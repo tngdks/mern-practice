@@ -5,7 +5,9 @@ function App() {
   //yaha user ke inputs ke liye states banayenge
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState(""); // yeha hum success ya error dikhayenge ki entry ho gyi hai ya nahi
+  const [password, setPassword] = useState("");// naya state banyenge password ke liye
+  const [errorMsg, setErrorMsg] = useState(""); // yeh state sirf error ke liye
+  const [successMsg, setSuccessMsg] = useState(""); // yeh state success hone pr ke liye hai
 
   //yaha hum batenyenge ki fomr submit hone pr kya hoga
   const handleSubmit = (e) => {
@@ -13,19 +15,30 @@ function App() {
     e.preventDefault();
 
     //yaha hum check karenge ki kahi khali form toh submit nahi kiya jaa rha
-    if (name === "" || email === "") {
-      setMessage(" Name aur Email dono khali nahi rahenge, dono mein entry chahiye!");
+    if (name === "" || email === "" || password === "") {
+      setMessage(" Name aur Email aur password tino khali nahi rahenge, dono mein entry chahiye!");
+      return;
+    }
+
+    //yeh check karega ki email mein @ ya . hai ya nahi
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      setErrorMsg("Email ka format galat hai. @ aur . sahi se lagaye");
+      return;
+    }
+
+    //yaha password length check karenge
+    if (password.length < 8) {
+      setErrorMsg("Password kam se kam 8 character lamba hona chahiye");
       return;
     }
 
     //yaha hum jo data user ne diya hai use ek packet mein banayneg aur backend ko bhejenge
-    const newFighter = {
-      name: name,
-      email: email
-    };
+    const newFighter = { name, email, password };
 
-    //yeh message jayega message state mein
-    setMessage(" Data bhej raha hai");
+    //entry sahi hone pr yeh msg jaayega successMsg state mein
+    setSuccessMsg(" Checking and saving data...");
+
 
     //POST request ka use karenge data ko backend ko bhejne ke liye
     //yaha hum phir se fake api ka use karenge
@@ -39,22 +52,24 @@ function App() {
       .then((response) => response.json())
       .then((data) => {
         console.log("backend mein yeh save ho gaya:", data);
-        setMessage(`Bdhai ho ${data.name} add ho gaya (ID: ${data.id})`);
+        setSuccessMsg(`Bdhai ho ${data.name} add ho gaya!`);// yeha se message successMessage state mein jayeega
 
         //form ko wapas se khali krna hoga
         setName("");
         setEmail("");
+        setPassword("");
       })
 
         // koi error aane pe yeh message bhejna hoga 
         .catch((error) => {
-          setMessage("Network error aa gaya");
+          setErrorMsg("Network error aa gaya. Backend tak nahi pahucha");
+          setSuccessMsg("");
         });
   };
 
   return (
     <div style={{ textAlign: "center", padding: "40px" }}>
-      <h2>⚔️ Add New Fighter</h2>
+      <h2>⚔️ Secure Fighter SignUp! </h2>
       
       {/* Form tag ke onSubmit mein apna function laga diya */}
       <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
@@ -68,20 +83,30 @@ function App() {
         />
         
         <input 
-          type="email" 
+          type="text" //yaha type text rkha hai taki humara apna validatuion check kaam kare
           placeholder="Email Address" 
           value={email} 
           onChange={(e) => setEmail(e.target.value)}
           style={{ padding: "10px", width: "250px" }}
         />
         
+        <input 
+        type="password" placeholder="Secret Password"
+        value={password} onChange={(e) => setPassword(e.target.value)}
+        style={{ padding: "10px", width: "250px "}}
+        />
+
+        
         <button type="submit" style={{ padding: "10px 20px", cursor: "pointer" }}>
-          Join Squad
+          Register Fighter
         </button>
       </form>
 
-      {/* Message dikhane ka dabba */}
-      {message && <h3 style={{ marginTop: "20px" }}>{message}</h3>}
+      {/* Error humesha laal rang mein aayega */}
+      {errorMsg && <h4 style={{ color:"red", marginTop: "20px" }}> { errorMsg } </h4> }
+
+      {/* Message successfully jaane pr hara dikhyega*/}
+      {successMsg && <h4 style={{ color:"green", marginTop:"20px" }}> { successMsg } </h4> }
     </div>
   );
 }
