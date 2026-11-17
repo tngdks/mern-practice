@@ -1,81 +1,129 @@
-import { useState, useEffect } from 'react';
-import'./App.css';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+
+//Page 1: home page
+function Home(){
+  return <h2> Welcome to DBZ Home Arena! </h2>
+}
+
+//Page 2: profile page
+function Profile(){
+  return <h2> Fighter's Secret Profile Page </h2>
+}
 
 function App() {
-  const[users, setUsers] = useState([]);
+  return (
+    //yeh manage krta hai ki ab screen pr kya dikhaya jaayega
+    <BrowserRouter>
 
-  //loding state banyenge aur suru true rakhnage kyuki hum page jb load ho tn data ke aane ka wait karenge starting mein
-  const [isLoading, setIsLoading] = useState(true);
+      {/* Navigation bar jo screen pr humesha upar dikhega */}
+      <nav style={{ padding: "10px", backgroundColor: "#333", color: "white"}}>
+        {/*yaha hum button banayene alag alag pages ke */}
+        <Link to="/" style={{color:"white", marginRight: "20px", }}> Home </Link>
+        <Link to="/profile" style={{color:"white"}}> Profile </Link>
+      </nav>
 
-  //yaha ek error state banayenge jo suru mein false nahi null hogi kkyuki hume error hone pr ek message dikhana hai toh jb error nahi hai toh message ek khali box ya null hoga
-  const [error, setError] = useState(null);
-
-  //page mein loading state ke chalne ke time pe yeh backgrond mein data load karega
-  useEffect(() => {
-    //fetch diye gaye url se data le kr aayega
-    fetch("https://jsonplaceholder.typicode.com/users")
-
-      //yeha response aa gaya url se ab response kaisa aaya hai sahi, galat ya aaya hi nahi ya ya kuch error hai usse deal karenge
-      .then((response) => {
-        //agar aaya data sahi (ok) nahi hai toh turant error throw karo
-        if(!response.ok){
-          throw new Error("API ya Internet mein gadbad hai!");
-        }
-        //respose sahi hai toh data ko json mein convert karo
-        return response.json();
-      })
-      .then((data) => {
-        console.log("yeh list aayi hai:", data);//console mein aayi hui list ko dekh lenge
-        setUsers(data);//yaha humne json data ko users state ko de diya
-        setIsLoading(false);//data successfully aane pe loading ko band kr diya 
-      })
-
-      //agar data url se laate time fetch fail hogay haise internet connection sustem ka band ho gaya
-      .catch((err) => {
-        setError(err.message);//error ko save kar liye ek state mein
-        setIsLoading(false);//fail hone pr bhi loading toh band krni hi hai user ko screen pe ek message dikhana hoga ki kya hua. hum uuse loading pe nahi atka sakta
-      });
-  }, []);//yaha empty list isliye ki page load hone pr yeh process ek baar chale\
-
-  //jb page load ho raha ho aur data abhi url se nahi aaya hai toh user ko loading screen dikhao
-  if(isLoading) {
-    return <h2 style={{ textAlign: "center", marginTop: "50px" }} > Loading Global Player List (From API)</h2>
-  }
-
-  //agar kuch error aagaya error waale state mein toh error dikhana hoga loading ko hata kr
-  if(error) {
-    return <h2 style={{ textAlign: "center", color: "red", marginTop: "50px" }}> Problem: {error} </h2>
-  }
-
-  //jb loading ho gayi aur data bhi successfully users state mein aa gaya json format mein to loading khatam karke screen pe data dikahan hoga
-  return(
-      <div style={{ textAlign: "center", padding: "20px"}}>
-       <h1>🌍 Global Players List (From API)</h1>
-
-        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center"}}>
-          {users.map((user) => (
-            <div
-              key={user.id}
-              style={{
-              border: "2px solid #ccc",
-              margin: "10px",
-              padding: "15px",
-              width: "250px",
-              borderRadius: "10px",
-              backgroundColor: "#f9f9f9"
-              }}
-            >
-              <h3> {user.name} </h3>
-              <p> 📧 {user.email} </p>
-              <p> 🏙️ City: {user.address.city} </p>
-            </div>
-        ))}
+      {/*yaha hum check karenge ki url mein kya hai aur usko screen pr dikhayenge*/}
+      <div style={{padding:"20px"}}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
+        </Routes>
       </div>
-    </div>
+    
+    </BrowserRouter>
   );
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
+
+
+// import { useState, useEffect } from 'react';
+// import'./App.css';
+
+// function App() {
+//   const[users, setUsers] = useState([]);
+
+//   //loding state banyenge aur suru true rakhnage kyuki hum page jb load ho tn data ke aane ka wait karenge starting mein
+//   const [isLoading, setIsLoading] = useState(true);
+
+//   //yaha ek error state banayenge jo suru mein false nahi null hogi kkyuki hume error hone pr ek message dikhana hai toh jb error nahi hai toh message ek khali box ya null hoga
+//   const [error, setError] = useState(null);
+
+//   //page mein loading state ke chalne ke time pe yeh backgrond mein data load karega
+//   useEffect(() => {
+//     //fetch diye gaye url se data le kr aayega
+//     fetch("https://jsonplaceholder.typicode.com/users")
+
+//       //yeha response aa gaya url se ab response kaisa aaya hai sahi, galat ya aaya hi nahi ya ya kuch error hai usse deal karenge
+//       .then((response) => {
+//         //agar aaya data sahi (ok) nahi hai toh turant error throw karo
+//         if(!response.ok){
+//           throw new Error("API ya Internet mein gadbad hai!");
+//         }
+//         //respose sahi hai toh data ko json mein convert karo
+//         return response.json();
+//       })
+//       .then((data) => {
+//         console.log("yeh list aayi hai:", data);//console mein aayi hui list ko dekh lenge
+//         setUsers(data);//yaha humne json data ko users state ko de diya
+//         setIsLoading(false);//data successfully aane pe loading ko band kr diya 
+//       })
+
+//       //agar data url se laate time fetch fail hogay haise internet connection sustem ka band ho gaya
+//       .catch((err) => {
+//         setError(err.message);//error ko save kar liye ek state mein
+//         setIsLoading(false);//fail hone pr bhi loading toh band krni hi hai user ko screen pe ek message dikhana hoga ki kya hua. hum uuse loading pe nahi atka sakta
+//       });
+//   }, []);//yaha empty list isliye ki page load hone pr yeh process ek baar chale\
+
+//   //jb page load ho raha ho aur data abhi url se nahi aaya hai toh user ko loading screen dikhao
+//   if(isLoading) {
+//     return <h2 style={{ textAlign: "center", marginTop: "50px" }} > Loading Global Player List (From API)</h2>
+//   }
+
+//   //agar kuch error aagaya error waale state mein toh error dikhana hoga loading ko hata kr
+//   if(error) {
+//     return <h2 style={{ textAlign: "center", color: "red", marginTop: "50px" }}> Problem: {error} </h2>
+//   }
+
+//   //jb loading ho gayi aur data bhi successfully users state mein aa gaya json format mein to loading khatam karke screen pe data dikahan hoga
+//   return(
+//       <div style={{ textAlign: "center", padding: "20px"}}>
+//        <h1>🌍 Global Players List (From API)</h1>
+
+//         <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center"}}>
+//           {users.map((user) => (
+//             <div
+//               key={user.id}
+//               style={{
+//               border: "2px solid #ccc",
+//               margin: "10px",
+//               padding: "15px",
+//               width: "250px",
+//               borderRadius: "10px",
+//               backgroundColor: "#f9f9f9"
+//               }}
+//             >
+//               <h3> {user.name} </h3>
+//               <p> 📧 {user.email} </p>
+//               <p> 🏙️ City: {user.address.city} </p>
+//             </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default App;
 
 
 
