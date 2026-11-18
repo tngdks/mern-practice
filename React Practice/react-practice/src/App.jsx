@@ -25,36 +25,35 @@ function App() {
 
     return ( 
         // YEH TAILWIND CSS SE KIYA GAYA HAI
-
-
-        // 1. Poori screen dark aur card ekdum center mein
         <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-4">
             
-            {/* 2. Main Fighter Card */}
-            <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-8">
+            {/* 1. Card padding: Mobile par p-5, badi screen par p-8 */}
+            <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-5 sm:p-8">
                 
                 {/* Header Section */}
                 <div className="text-center mb-6">
                     <span className="text-xs font-semibold uppercase tracking-widest text-indigo-400">
                         Fighter Profile
                     </span>
-                    <h1 className="text-3xl font-extrabold mt-1 text-white">
+                    {/* 2. Naam ka size: Mobile par text-2xl, badi screen par text-3xl */}
+                    <h1 className="text-2xl sm:text-3xl font-extrabold mt-1 text-white">
                         {name}
                     </h1>
                 </div>
 
                 {/* Power Level Box */}
-                <div className="bg-slate-950/70 border border-slate-800 rounded-xl p-6 text-center mb-6">
-                    <p className="text-sm text-slate-400 uppercase tracking-wider">
+                <div className="bg-slate-950/70 border border-slate-800 rounded-xl p-5 sm:p-6 text-center mb-6">
+                    <p className="text-xs sm:text-sm text-slate-400 uppercase tracking-wider">
                         Current Power Level
                     </p>
-                    <p className="text-5xl font-black text-amber-400 mt-2">
+                    {/* 3. Power number: Mobile par text-4xl, badi screen par text-5xl */}
+                    <p className="text-4xl sm:text-5xl font-black text-amber-400 mt-2">
                         {power}
                     </p>
                 </div>
 
-                {/* Action Buttons (Side-by-side) */}
-                <div className="grid grid-cols-2 gap-4 mb-6">
+                {/* 4. Action Buttons: Mobile par upar-neeche (cols-1), badi screen par side-by-side (sm:grid-cols-2) */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6">
                     <button
                         onClick={() => dispatch(trainFighter(50))}
                         className="bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold py-3 px-4 rounded-xl cursor-pointer transition duration-150 shadow-lg shadow-emerald-900/30"
@@ -78,7 +77,8 @@ function App() {
                     <label className="block text-sm font-medium text-slate-400">
                         Update Fighter Name
                     </label>
-                    <div className="flex gap-2">
+                    {/* 5. Input & Button: Mobile par upar-neeche (flex-col), badi screen par ek line mein (sm:flex-row) */}
+                    <div className="flex flex-col sm:flex-row gap-2">
                         <input
                             type="text"
                             placeholder="Naya naam likho..."
@@ -99,6 +99,79 @@ function App() {
         </div>
     );
 }
+
+//         // 1. Poori screen dark aur card ekdum center mein
+//         <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-4">
+            
+//             {/* 2. Main Fighter Card */}
+//             <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-8">
+                
+//                 {/* Header Section */}
+//                 <div className="text-center mb-6">
+//                     <span className="text-xs font-semibold uppercase tracking-widest text-indigo-400">
+//                         Fighter Profile
+//                     </span>
+//                     <h1 className="text-3xl font-extrabold mt-1 text-white">
+//                         {name}
+//                     </h1>
+//                 </div>
+
+//                 {/* Power Level Box */}
+//                 <div className="bg-slate-950/70 border border-slate-800 rounded-xl p-6 text-center mb-6">
+//                     <p className="text-sm text-slate-400 uppercase tracking-wider">
+//                         Current Power Level
+//                     </p>
+//                     <p className="text-5xl font-black text-amber-400 mt-2">
+//                         {power}
+//                     </p>
+//                 </div>
+
+//                 {/* Action Buttons (Side-by-side) */}
+//                 <div className="grid grid-cols-2 gap-4 mb-6">
+//                     <button
+//                         onClick={() => dispatch(trainFighter(50))}
+//                         className="bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold py-3 px-4 rounded-xl cursor-pointer transition duration-150 shadow-lg shadow-emerald-900/30"
+//                     >
+//                         +50 Train
+//                     </button>
+
+//                     <button
+//                         onClick={() => dispatch(takeDamage(30))}
+//                         className="bg-rose-600 hover:bg-rose-500 active:scale-95 text-white font-bold py-3 px-4 rounded-xl cursor-pointer transition duration-150 shadow-lg shadow-rose-900/30"
+//                     >
+//                         -30 Damage
+//                     </button>
+//                 </div>
+
+//                 {/* Divider */}
+//                 <div className="border-t border-slate-800 my-6"></div>
+
+//                 {/* Name Update Form */}
+//                 <div className="space-y-3">
+//                     <label className="block text-sm font-medium text-slate-400">
+//                         Update Fighter Name
+//                     </label>
+//                     <div className="flex gap-2">
+//                         <input
+//                             type="text"
+//                             placeholder="Naya naam likho..."
+//                             value={newName}
+//                             onChange={(e) => setNewName(e.target.value)}
+//                             className="flex-1 bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+//                         />
+//                         <button
+//                             onClick={handleNameChange}
+//                             className="bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-semibold px-5 py-2.5 rounded-xl cursor-pointer transition duration-150"
+//                         >
+//                             Update
+//                         </button>
+//                     </div>
+//                 </div>
+
+//             </div>
+//         </div>
+//     );
+// }
 
 export default App;
 
