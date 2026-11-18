@@ -27,7 +27,8 @@ function App() {
             {/* yaha humne 50 as a payload bheja */}
             <button
                 onClick={() => dispatch(trainFighter(50))}
-                style={{ padding: "10px", margin: "10px", backgroundColor: "green", color: "white"}}>
+                {/* yaha tailwind ka use kiya gaya hai */}
+                className="bg-color-600 hover:bg-green-700 text-white font-bold px-5 py-2.5 rounded-lg m-2 cursor-pointer transition">
                     Super Train (+50)
                 </button>
 
