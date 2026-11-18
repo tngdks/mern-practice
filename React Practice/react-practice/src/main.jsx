@@ -1,10 +1,14 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+// yaha hum Provider lagayenge taki pure store ka access mil jaaye
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import { Provider } from 'react-redux';
+import { store } from './store';
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+    //yaha hum App ko store yani Vault se connect karenge
+    <Provider store={store}>
+        <App />
+    </Provider>
+);
