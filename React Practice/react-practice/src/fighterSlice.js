@@ -10,6 +10,7 @@ const initialState = {
 const fighterSlice = createSlice({
     name: 'fighter',
     initialState,
+    isLoggedIn: false, //yaha ek naya state hai
     reducers: {
 
         //yaha Action slip 1 rahegi jo ki training
@@ -28,12 +29,28 @@ const fighterSlice = createSlice({
         changeFighterName: (state, action) => {
             //action payload mein jo bhi naya naam aayega woh purne ko replace kr dega
             state.fighterName = action.payload;
+        },
+
+        //yaha hum fighter ka login banayenge
+        loginFighter: (state) => {
+            state.isLoggedIn = true;
+        },
+
+        //yaha hum fighter ka logout banayenge
+        logoutFighter: (state) => {
+            state.isLoggedIn = false;
         }
     }
 });
 
 //yaha hum Action slips yani in function ko export karenge taki workers ise use kr sake
-export const { trainFighter, takeDamage, changeFighterName } = fighterSlice.actions;
+export const { 
+    trainFighter, 
+    takeDamage, 
+    changeFighterName,
+    loginFighter,
+    logoutFighter,
+ } = fighterSlice.actions;
 
 //ab manager yani reducer ko yaha se export kare taki woh Main vault(store)
 //mein baith sake
