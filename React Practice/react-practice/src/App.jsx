@@ -1,23 +1,49 @@
-//useMemo KA USE AISE HOTA HAI
-import { useState, useMemo } from 'react';
-function PowerCalculator({ basePower, bonus }) {
-    const [clicks, setClicks] = useState(0);
+//useCallback ka use aise hota hai
+import { useState, useCallback } from 'react';
 
-    //sirf tab chalega jab basePower ya bonus badlega; clicks badlne par nahi
-    const totalPower = useMemo(() => {
-        console.log("Heavy power calculation running...");
-        return basePower + bonus * 10;
-    }, [basePower, bonus]);
+function ArenaControls() {
+    const [power, setPower] = useState(100);
+    const [ticks, setTicks] = useState(0);
 
-    return (
-        <div className="p-4 space-y-2">
-            <p>Total Power: {totalPower}</p>
-            <button onClick={() => setClicks((c) => c + 1)}>
-                Unrelated Clicks: {clicks}
-            </button>
-        </div>
-    );
+//yeh function tabhi naya banega jab power badlega
+const handleTrain = useCallback(() => {
+    setPower((prev) => prev + 50);
+}, [power]);
+
+return (
+    <div className="p-4 space-y-2">
+        <p>Power: {power} | Ticks: {ticks}</p>
+        <button onClick={handleTrain}>Train</button>
+        <button onClick={() => setTicks((t) => t + 1)}>Tick</button>
+    </div>
+);
+
 }
+
+
+
+
+
+//useMemo KA USE AISE HOTA HAI
+// import { useState, useMemo } from 'react';
+// function PowerCalculator({ basePower, bonus }) {
+//     const [clicks, setClicks] = useState(0);
+
+//     //sirf tab chalega jab basePower ya bonus badlega; clicks badlne par nahi
+//     const totalPower = useMemo(() => {
+//         console.log("Heavy power calculation running...");
+//         return basePower + bonus * 10;
+//     }, [basePower, bonus]);
+
+//     return (
+//         <div className="p-4 space-y-2">
+//             <p>Total Power: {totalPower}</p>
+//             <button onClick={() => setClicks((c) => c + 1)}>
+//                 Unrelated Clicks: {clicks}
+//             </button>
+//         </div>
+//     );
+// }
 
 
 
