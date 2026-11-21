@@ -4,7 +4,19 @@ function PowerCalculator({ basePower, bonus }) {
     const [clicks, setClicks] = useState(0);
 
     //sirf tab chalega jab basePower ya bonus badlega; clicks badlne par nahi
-    
+    const totalPower = useMemo(() => {
+        console.log("Heavy power calculation running...");
+        return basePower + bonus * 10;
+    }, [basePower, bonus]);
+
+    return (
+        <div className="p-4 space-y-2">
+            <p>Total Power: {totalPower}</p>
+            <button onClick={() => setClicks((c) => c + 1)}>
+                Unrelated Clicks: {clicks}
+            </button>
+        </div>
+    );
 }
 
 
