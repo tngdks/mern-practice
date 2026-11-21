@@ -1,88 +1,142 @@
-import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { loginFighter, logoutFighter } from './fighterSlice';
+//useMemo KA USE AISE HOTA HAI
+import { useState, useMemo } from 'react';
+function PowerCalculator({ basePower, bonus }) {
+    const [clicks, setClicks] = useState(0);
 
-// yaha pe Protected Route khud Redux store se isLoggedIn Check kar raha hai
-function ProtectedRoute({ children }){
-    const isLoggedIn = useSelector((state) => state.fighter.isLoggedIn);
-
-    if (!isLoggedIn) {
-        return <Navigate to ="/login" replace />;
-    }
-
-    return children;
+    //sirf tab chalega jab basePower ya bonus badlega; clicks badlne par nahi
+    
 }
 
-//yaha login page rahega
- function LoginPage() {
-    const dispatch = useDispatch();
-    const fighterName = useSelector((state) => state.fighter.fighterName);
 
 
-    return (
-        <div className="p-6 text-center space-y-4">
-            <h2 className="text-2xl font-bold">Fighter Login: {fighterName}</h2>
-            <button 
-                onClick={() => dispatch(loginFighter())}
-                className="bg-indigo-600 hover:bg-indigo-500 px-5 py-2.5 rounded-lg font-semibold curson-pointer"
-            >
-                Login
-            </button>
-        </div>
-    );
- }
 
- //yaha pe protected Arena / dashboard page rahega
- function ArenaPage() {
-    const dispatch = useDispatch();
-    const { fighterName, powerLevel } = useSelector((state) => state.fighter);
 
-    return (
-        <div className="p-6 text-center space-y-4">
-            <h2 className="text-2xl font-bold text-emerald-400">Battle Arena</h2>
-            <p className="text-lg">
-                Fighter: <span className="font-bold">{fighterName}</span> | Power: {' '}
-            </p>
-            <button 
-                onClick={() => dispatch(logoutFighter())}
-                className="bg-rose-600 hover:bg-rose-500 px-5 py-2.5 rounded-lg font-semibold curson-pointer"
-                >
-                    Logout
-            </button>
-        </div>
+
+
+
+
+// useRef KA USE AISE HAOTA HAI
+
+// import { useRef } from 'react';
+
+// function FocusInput() {
+//     const inputRef = useRef(null);
+
+//     const handleFocus = () => {
+//         inputRef.current.focus();// yaha se seedha DOM input pr focus hoga
+//     };
+
+//     return (
+//         <div className="p-4 fles gap-2">
+//             <input 
+//                 ref={inputRef}
+//                 type="text"
+//                 placeholder="Yaha click ya focus hoga"
+//                 className="bg-slate-800 text-white px-3 py-2 rounded-lg"
+//             />
+//             <button
+//                 onClick={handleFocus}
+//                 className="bg-indigo-600 text-white px-4 py-2 rounded-lg cursor-pointer"
+//             >
+//                 Focus Box
+//             </button>
+//         </div>
+//     );
+// }
+
+// export default App;
+
+
+
+
+
+
+
+// import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
+// import { useSelector, useDispatch } from 'react-redux';
+// import { loginFighter, logoutFighter } from './fighterSlice';
+
+// // yaha pe Protected Route khud Redux store se isLoggedIn Check kar raha hai
+// function ProtectedRoute({ children }){
+//     const isLoggedIn = useSelector((state) => state.fighter.isLoggedIn);
+
+//     if (!isLoggedIn) {
+//         return <Navigate to ="/login" replace />;
+//     }
+
+//     return children;
+// }
+
+// //yaha login page rahega
+//  function LoginPage() {
+//     const dispatch = useDispatch();
+//     const fighterName = useSelector((state) => state.fighter.fighterName);
+
+
+//     return (
+//         <div className="p-6 text-center space-y-4">
+//             <h2 className="text-2xl font-bold">Fighter Login: {fighterName}</h2>
+//             <button 
+//                 onClick={() => dispatch(loginFighter())}
+//                 className="bg-indigo-600 hover:bg-indigo-500 px-5 py-2.5 rounded-lg font-semibold curson-pointer"
+//             >
+//                 Login
+//             </button>
+//         </div>
+//     );
+//  }
+
+//  //yaha pe protected Arena / dashboard page rahega
+//  function ArenaPage() {
+//     const dispatch = useDispatch();
+//     const { fighterName, powerLevel } = useSelector((state) => state.fighter);
+
+//     return (
+//         <div className="p-6 text-center space-y-4">
+//             <h2 className="text-2xl font-bold text-emerald-400">Battle Arena</h2>
+//             <p className="text-lg">
+//                 Fighter: <span className="font-bold">{fighterName}</span> | Power: {' '}
+//             </p>
+//             <button 
+//                 onClick={() => dispatch(logoutFighter())}
+//                 className="bg-rose-600 hover:bg-rose-500 px-5 py-2.5 rounded-lg font-semibold curson-pointer"
+//                 >
+//                     Logout
+//             </button>
+//         </div>
             
-    );
- }
+//     );
+//  }
 
 
- //yaha main App funciton rahega
- function App() {
-    return (
-        <BrowserRouter>
-            <div className="min-h-screen bg-slate-950 text-white">
-                <nav className="flex gap-4 p-4 bg-slate-900 border-b border-slate-800">
-                    <Link to="/login" className="hover:text-indigo-400">Login</Link>
-                    <Link to="/arena" className="hover:text-indigo-400">Arena</Link>
-                </nav>
+//  //yaha main App funciton rahega
+//  function App() {
+//     return (
+//         <BrowserRouter>
+//             <div className="min-h-screen bg-slate-950 text-white">
+//                 <nav className="flex gap-4 p-4 bg-slate-900 border-b border-slate-800">
+//                     <Link to="/login" className="hover:text-indigo-400">Login</Link>
+//                     <Link to="/arena" className="hover:text-indigo-400">Arena</Link>
+//                 </nav>
 
-                <Routes>
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route
-                        path="/arena"
-                        element={
-                            <ProtectedRoute>
-                                <ArenaPage />
-                            </ProtectedRoute>
-                        }
-                    />
-                    <Route path="*" element={<Navigate to="/login" replace />} />
-                </Routes>
-            </div>
-        </BrowserRouter>
-    );
- }
+//                 <Routes>
+//                     <Route path="/login" element={<LoginPage />} />
+//                     <Route
+//                         path="/arena"
+//                         element={
+//                             <ProtectedRoute>
+//                                 <ArenaPage />
+//                             </ProtectedRoute>
+//                         }
+//                     />
+//                     <Route path="*" element={<Navigate to="/login" replace />} />
+//                 </Routes>
+//             </div>
+//         </BrowserRouter>
+//     );
+//  }
 
- export default App;
+//  export default App;
 
 
 
